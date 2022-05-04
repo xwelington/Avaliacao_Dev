@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="./style.css"
+      <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/104e6e9d11.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        $("#salvar").click(function () {
+          //$.post( "http://localhost:8080/tb01", { texto : $("txtId").val() } )
+          $.ajax({
+            url: "http://localhost:8080/tb01",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+              $("#target").html("Texto inserido com sucesso!");
+            },
+            data: '{ "texto" : "' + $("#txtId").val() + '" }',
+          });
+        });
+
+        $("#pesquisar").click(function () {
+          $.ajax({
+            url: "http://localhost:8000/tb01",
+            type: "get",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+              var retorno = "";
+              data.forEach(function (d) {
+                retorno +=
+                  "id:" +
+                  d.id +
+                  " col_texto: " +
+                  d.col_texto +
+                  " col_dt: " +
+                  d.col_dt +
+                  "\n";
+              });
+              $("#target").html("<pre>" + retorno + "</pre>");
+            },
+          });
+        });
+      });
+    </script>
+
+    <title>Teste DEV Digital</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header" align="center">
+        <h2>Cadastro de Dados</h2>
+      </div>
+
+      <div class="form-control" align="center">
+        <div class="textarea">
+          <textarea
+            class="txtarea"
+            id="txtId"
+            name="Texto"
+            placeholder="Digite a informação que deseja ser armazenada."
+            required
+          ></textarea>
+        </div>
+
+        <button class="form-control-button" id="salvar" align="center">
+          Enviar
+        </button>
+      </div>
+
+      <div class="form-control" align="center">
+        <button class="form-control-button" id="pesquisar" align="center">
+          Pesquisar
+        </button>
+      </div>
+
+      <div id="target"></div>
+    </div>
+  </body>
+</html>
